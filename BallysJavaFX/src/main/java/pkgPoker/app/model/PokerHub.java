@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import netgame.common.Hub;
 import pkgPokerBLL.Action;
@@ -71,14 +72,39 @@ public class PokerHub extends Hub {
 				Rule rle = new Rule(act.geteGame());
 				
 				//TODO Lab #5 - If neither player has 'the button', pick a random player
-				//		and assign the button.				
-
+				//		and assign the button.
+				UUID DealerID = null;
+				
+				// If Player in table pressed start, set that player as dealer
+				for(UUID id:HubPokerTable.getHmPlayer().keySet()){
+					if(id.equals(act.getPlayer().getPlayerID())){
+						DealerID = id;
+					}
+				}
+				
+				// Else set random Player as dealer
+				if(DealerID==null){
+					DealerID = HubPokerTable.getHmPlayer().keySet().iterator().next();
+				}
+				
 				//TODO Lab #5 - Start the new instance of GamePlay
-								
+				HubGamePlay = new GamePlay(rle,DealerID);
+				
 				// Add Players to Game
+				HubGamePlay.setGamePlayers(HubPokerTable.getHmPlayer());
 				
 				// Set the order of players
 				
+				// Initalizes Integer Array 'Order'... I'm using Order methods in GamePlay class to set order of players.
+				// Order will be a Integer Array starting with the Dealer's player position.
+				int[] Order = null;
+				
+				for(Player p:HubPokerTable.getHmPlayer().values()){
+					if(p.getPlayerID().equals(DealerID)){
+						Order = GamePlay.GetOrder(p.getiPlayerPosition());
+					}
+				}
+				HubGamePlay.setiActOrder(Order);
 
 
 			case Draw:
@@ -86,7 +112,27 @@ public class PokerHub extends Hub {
 				//TODO Lab #5 -	Draw card(s) for each player in the game.
 				//TODO Lab #5 -	Make sure to set the correct visiblity
 				//TODO Lab #5 -	Make sure to account for community cards
-
+				switch(act.geteGame()){
+				case FiveStud:
+					break;
+				case FiveStudOneJoker:
+					break;
+				case FiveStudTwoJoker:
+					break;
+				case TexasHoldEm:
+					break;
+				case Omaha:
+					break;
+				case DeucesWild:
+					break;
+				case AcesAndEights:
+					break;
+				case SevenDraw:
+					break;
+				case SuperOmaha:
+					break;
+				}
+				
 				//TODO Lab #5 -	Check to see if the game is over
 				HubGamePlay.isGameOver();
 				
