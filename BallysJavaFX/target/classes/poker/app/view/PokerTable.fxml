@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:id="OuterBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="1006.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkgPoker.app.controller.PokerTableController">
+<BorderPane fx:id="OuterBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="1006.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pkgPoker.app.controller.PokerTableController">
    <bottom>
       <HBox alignment="CENTER" prefHeight="144.0" prefWidth="879.0" style="-fx-background-color: green;" BorderPane.alignment="BOTTOM_CENTER">
          <children>
@@ -149,7 +155,7 @@
                         <Insets />
                      </opaqueInsets>
                   </HBox>
-                  <HBox fx:id="hboxP3Cards" alignment="BOTTOM_LEFT" prefHeight="98.0" prefWidth="325.0" GridPane.columnIndex="1">
+                  <HBox fx:id="hboxP2Cards" alignment="BOTTOM_LEFT" prefHeight="98.0" prefWidth="325.0" GridPane.columnIndex="1">
                      <children>
                         <ImageView fitHeight="75.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -164,7 +170,7 @@
                         <FlowPane prefHeight="11.0" prefWidth="130.0">
                            <children>
                               <ToggleButton id="btnPos2SitLeave" fx:id="btnPos2SitLeave" minWidth="50.0" mnemonicParsing="false" onAction="#btnSitLeave_Click" styleClass="togglebutton" text="Sit" />
-                              <ImageView id="imgViewDealerButtonPos1" fx:id="imgViewDealerButtonPos3" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView id="imgViewDealerButtonPos1" fx:id="imgViewDealerButtonPos2" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../../../resources/img/d-button.png" />
                                  </image>

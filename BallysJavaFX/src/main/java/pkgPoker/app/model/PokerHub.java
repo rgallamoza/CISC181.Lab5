@@ -77,7 +77,7 @@ public class PokerHub extends Hub {
 				
 				// If Player in table pressed start, set that player as dealer
 				for(UUID id:HubPokerTable.getHmPlayer().keySet()){
-					if(id.equals(act.getPlayer().getPlayerID())){
+					if(id.equals(actPlayer.getPlayerID())){
 						DealerID = id;
 					}
 				}
@@ -95,7 +95,7 @@ public class PokerHub extends Hub {
 				
 				// Set the order of players
 				
-				// Initalizes Integer Array 'Order'... I'm using Order methods in GamePlay class to set order of players.
+				// Initializes Integer Array 'Order'... I'm using Order methods in GamePlay class to set order of players.
 				// Order will be a Integer Array starting with the Dealer's player position.
 				int[] Order = null;
 				
@@ -106,35 +106,45 @@ public class PokerHub extends Hub {
 				}
 				HubGamePlay.setiActOrder(Order);
 
-
 			case Draw:
-
+				Rule drawrle = new Rule(act.geteGame());
 				//TODO Lab #5 -	Draw card(s) for each player in the game.
-				//TODO Lab #5 -	Make sure to set the correct visiblity
+				//TODO Lab #5 -	Make sure to set the correct visibility
 				//TODO Lab #5 -	Make sure to account for community cards
-				switch(act.geteGame()){
-				case FiveStud:
-					break;
-				case FiveStudOneJoker:
-					break;
-				case FiveStudTwoJoker:
-					break;
-				case TexasHoldEm:
-					break;
-				case Omaha:
-					break;
-				case DeucesWild:
-					break;
-				case AcesAndEights:
-					break;
-				case SevenDraw:
-					break;
-				case SuperOmaha:
-					break;
+				
+				//Increments DrawCount by 1
+				HubGamePlay.seteDrawCountLast(eDrawCount.geteDrawCount(HubGamePlay.geteDrawCountLast().getDrawNo()+1));
+				
+				//Gets the CardDraw from rule
+				CardDraw draw = drawrle.GetDrawCard(HubGamePlay.geteDrawCountLast());
+				
+				//If Draw to be sent to Players...
+				if(draw.getCardDestination()==eCardDestination.Player){
+					//Get order from HubGamePlay
+					for(int x:HubGamePlay.getiActOrder()){
+						//Get Players currently sitting
+						for(Player p:HubPokerTable.getHmPlayer().values()){
+							//If PlayerPosition equals order#
+							if(x==p.getiPlayerPosition()){
+								//Draw cards for players, dependent on count value from CardDraw
+								for(int i=0;i<draw.getCardCount().getCardCount();i++){
+									HubGamePlay.drawCard(p, eCardDestination.Player);
+								}
+							}
+						}
+					}
+				}
+				//Else drawn cards sent to common hand... # of cards dependent on count value from CardDraw
+				else{
+					for(int i=0;i<draw.getCardCount().getCardCount();i++){
+						HubGamePlay.drawCard(null, eCardDestination.Community);
+					}
 				}
 				
 				//TODO Lab #5 -	Check to see if the game is over
-				HubGamePlay.isGameOver();
+				if(HubGamePlay.geteDrawCountLast().getDrawNo()==drawrle.GetMaxDrawCount()){
+					HubGamePlay.isGameOver();
+				}
 				
 				resetOutput();
 				//	Send the state of the gameplay back to the clients
@@ -142,7 +152,7 @@ public class PokerHub extends Hub {
 				break;
 			case ScoreGame:
 				// Am I at the end of the game?
-
+				HubGamePlay.ScoreGame();
 				resetOutput();
 				sendToAll(HubGamePlay);
 				break;
