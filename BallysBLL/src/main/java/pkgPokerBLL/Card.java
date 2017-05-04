@@ -1,11 +1,12 @@
 package pkgPokerBLL;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import pkgPokerEnum.eRank;
 import pkgPokerEnum.eSuit;
 
-public class Card implements Comparable {
+public class Card implements Comparable,Serializable{
 
 	private eRank eRank;
 	private eSuit eSuit;

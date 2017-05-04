@@ -1,5 +1,6 @@
 package pkgPokerBLL;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import pkgPokerEnum.eRank;
 import pkgPokerEnum.eSuit;
  
 
-public class Hand {
+public class Hand implements Serializable{
 
 	
 	private UUID HandId;

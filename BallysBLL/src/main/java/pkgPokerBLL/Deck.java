@@ -1,5 +1,6 @@
 package pkgPokerBLL;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
@@ -7,7 +8,7 @@ import java.util.UUID;
 import pkgPokerEnum.eRank;
 import pkgPokerEnum.eSuit;
 
-public class Deck {
+public class Deck implements Serializable {
 
 	private UUID DeckID;
 	private ArrayList<Card> DeckCards = new ArrayList<Card>();

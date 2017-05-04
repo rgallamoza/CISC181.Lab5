@@ -74,7 +74,6 @@ public class PokerHub extends Hub {
 				//TODO Lab #5 - If neither player has 'the button', pick a random player
 				//		and assign the button.
 				UUID DealerID = null;
-				
 				// If Player in table pressed start, set that player as dealer
 				for(UUID id:HubPokerTable.getHmPlayer().keySet()){
 					if(id.equals(actPlayer.getPlayerID())){
@@ -107,7 +106,6 @@ public class PokerHub extends Hub {
 				HubGamePlay.setiActOrder(Order);
 
 			case Draw:
-				Rule drawrle = new Rule(act.geteGame());
 				//TODO Lab #5 -	Draw card(s) for each player in the game.
 				//TODO Lab #5 -	Make sure to set the correct visibility
 				//TODO Lab #5 -	Make sure to account for community cards
@@ -115,8 +113,8 @@ public class PokerHub extends Hub {
 				//Increments DrawCount by 1
 				HubGamePlay.seteDrawCountLast(eDrawCount.geteDrawCount(HubGamePlay.geteDrawCountLast().getDrawNo()+1));
 				
-				//Gets the CardDraw from rule
-				CardDraw draw = drawrle.GetDrawCard(HubGamePlay.geteDrawCountLast());
+				//Gets the new CardDraw from gameplay's rule
+				CardDraw draw = HubGamePlay.getRule().GetDrawCard(HubGamePlay.geteDrawCountLast());
 				
 				//If Draw to be sent to Players...
 				if(draw.getCardDestination()==eCardDestination.Player){
@@ -134,15 +132,15 @@ public class PokerHub extends Hub {
 						}
 					}
 				}
-				//Else drawn cards sent to common hand... # of cards dependent on count value from CardDraw
+				//Else drawn cards should be sent to common hand... # of cards dependent on count value from CardDraw
 				else{
 					for(int i=0;i<draw.getCardCount().getCardCount();i++){
-						HubGamePlay.drawCard(null, eCardDestination.Community);
+						HubGamePlay.drawCard(new Player(), eCardDestination.Community);
 					}
 				}
 				
 				//TODO Lab #5 -	Check to see if the game is over
-				if(HubGamePlay.geteDrawCountLast().getDrawNo()==drawrle.GetMaxDrawCount()){
+				if(HubGamePlay.geteDrawCountLast().getDrawNo()==HubGamePlay.getRule().GetMaxDrawCount()){
 					HubGamePlay.isGameOver();
 				}
 				

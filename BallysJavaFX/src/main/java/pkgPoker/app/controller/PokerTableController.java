@@ -180,41 +180,36 @@ public class PokerTableController implements Initializable {
 
 	public void Handle_TableState(Table HubPokerTable) {
 
+		// Set default state of the buttons/labels
+		getPlayerLabel(1).setText("");
+		getPlayerLabel(2).setText("");
+		getSitLeave(1).setVisible(true);
+		getSitLeave(2).setVisible(true);
+		getSitLeave(1).setText("Sit");
+		getSitLeave(2).setText("Sit");
+
 		Iterator it = HubPokerTable.getHmPlayer().entrySet().iterator();
-		lblPlayerPos1.setText("");
-		lblPlayerPos2.setText("");
-		btnPos1SitLeave.setText("Sit");
-		btnPos2SitLeave.setText("Sit");
-
-		if (HubPokerTable.getHmPlayer().size()> 0)
-		{
-			btnPos1SitLeave.setVisible(false);
-			btnPos2SitLeave.setVisible(false);
-		}
-
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
 			Player p = (Player) pair.getValue();
+			// Set the player label
+			getPlayerLabel(p.getiPlayerPosition()).setText(p.getPlayerName());
 
-			if (p.getiPlayerPosition() == 1) {
-				lblPlayerPos1.setText(p.getPlayerName());
-				btnPos1SitLeave.setText("Leave");
-
-			} else if (p.getiPlayerPosition() == 2) {
-				lblPlayerPos2.setText(p.getPlayerName());
-				btnPos2SitLeave.setText("Leave");
-			}
-
- 			ToggleButton btnSitLeave = getSitLeave(p.getiPlayerPosition());
-
+			// Am I the player
 			if (p.getiPokerClientID() == mainApp.getPlayer().getiPokerClientID()) {
-				btnSitLeave.setText("Leave");
-				btnSitLeave.setVisible(true);
+				getSitLeave(p.getiPlayerPosition()).setVisible(true);
+				getSitLeave(p.getiPlayerPosition()).setText("Leave");
 
-			} else {
-				btnSitLeave.setVisible(false);
-			} 
+				for (int a = 1; a < 3; a++) {
+					if (a != p.getiPlayerPosition())
+						getSitLeave(a).setVisible(false);
+				}
 
+			}
+			// I'm not the player, but someone is sitting in that spot
+			else {
+				getSitLeave(p.getiPlayerPosition()).setVisible(false);
+			}
 		}
 
 	}
@@ -223,6 +218,7 @@ public class PokerTableController implements Initializable {
 		//Clear current cards (so they don't overlap)
 		hboxP1Cards.getChildren().clear();
 		hboxP2Cards.getChildren().clear();
+		hboxCommunity.getChildren().clear();
 		
 		//Get players in game
 		for(Player p:HubPokerGame.getGamePlayers().values()){
@@ -249,14 +245,18 @@ public class PokerTableController implements Initializable {
 				}
 			}
 		}
+		//Get common hand
+		for(Card c:HubPokerGame.getGameCommonHand().getCardsInHand()){
+			hboxCommunity.getChildren().add(BuildImage(c.getiCardNbr()));
+		}
 	}
 
 	private ImageView BuildImage(int iCardNbr) {
 		String strImgPath;
 		if (iCardNbr == 0) {
-			strImgPath = "/img/b2fv.png";
+			strImgPath = "/include/img/b2fv.png";
 		} else {
-			strImgPath = "/img/" + iCardNbr + ".png";
+			strImgPath = "/include/img/" + iCardNbr + ".png";
 		}
 
 		ImageView i1 = new ImageView(new Image(getClass().getResourceAsStream(strImgPath), 75, 75, true, true));
