@@ -110,34 +110,38 @@ public class PokerHub extends Hub {
 				//TODO Lab #5 -	Make sure to set the correct visibility
 				//TODO Lab #5 -	Make sure to account for community cards
 				
-				//Increments DrawCount by 1
-				HubGamePlay.seteDrawCountLast(eDrawCount.geteDrawCount(HubGamePlay.geteDrawCountLast().getDrawNo()+1));
-				
-				//Gets the new CardDraw from gameplay's rule
-				CardDraw draw = HubGamePlay.getRule().GetDrawCard(HubGamePlay.geteDrawCountLast());
-				
-				//If Draw to be sent to Players...
-				if(draw.getCardDestination()==eCardDestination.Player){
-					//Get order from HubGamePlay
-					for(int x:HubGamePlay.getiActOrder()){
-						//Get Players currently sitting
-						for(Player p:HubPokerTable.getHmPlayer().values()){
-							//If PlayerPosition equals order#
-							if(x==p.getiPlayerPosition()){
-								//Draw cards for players, dependent on count value from CardDraw
-								for(int i=0;i<draw.getCardCount().getCardCount();i++){
-									HubGamePlay.drawCard(p, eCardDestination.Player);
+				//Check if dealer drew card
+				if(actPlayer.getPlayerID().equals(HubGamePlay.getGameDealer())){
+					//Increments DrawCount by 1
+					HubGamePlay.seteDrawCountLast(eDrawCount.geteDrawCount(HubGamePlay.geteDrawCountLast().getDrawNo()+1));
+					
+					//Gets the new CardDraw from gameplay's rule
+					CardDraw draw = HubGamePlay.getRule().GetDrawCard(HubGamePlay.geteDrawCountLast());
+					
+					//If Draw to be sent to Players...
+					if(draw.getCardDestination()==eCardDestination.Player){
+						//Get order from HubGamePlay
+						for(int x:HubGamePlay.getiActOrder()){
+							//Get Players currently sitting
+							for(Player p:HubPokerTable.getHmPlayer().values()){
+								//If PlayerPosition equals order#
+								if(x==p.getiPlayerPosition()){
+									//Draw cards for players, dependent on count value from CardDraw
+									for(int i=0;i<draw.getCardCount().getCardCount();i++){
+										HubGamePlay.drawCard(p, eCardDestination.Player);
+									}
 								}
 							}
 						}
 					}
-				}
-				//Else drawn cards should be sent to common hand... # of cards dependent on count value from CardDraw
-				else{
-					for(int i=0;i<draw.getCardCount().getCardCount();i++){
-						HubGamePlay.drawCard(new Player(), eCardDestination.Community);
+					//Else drawn cards should be sent to common hand... # of cards dependent on count value from CardDraw
+					else{
+						for(int i=0;i<draw.getCardCount().getCardCount();i++){
+							HubGamePlay.drawCard(new Player(), eCardDestination.Community);
+						}
 					}
 				}
+
 				
 				//TODO Lab #5 -	Check to see if the game is over
 				if(HubGamePlay.geteDrawCountLast().getDrawNo()==HubGamePlay.getRule().GetMaxDrawCount()){
